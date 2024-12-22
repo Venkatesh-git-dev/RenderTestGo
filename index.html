@@ -4,8 +4,363 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+
+    <style>
+      /* General Styling */
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: black;
+        font-family: "Courier New", monospace;
+      }
+
+      /* Matrix Container */
+      .matrix-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* General Styling */
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: black;
+        font-family: "Courier New", monospace;
+      }
+
+      /* Matrix Container */
+      .matrix-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      /*------------------------------------*/
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: black;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container {
+        text-align: center;
+        width: 100%;
+        max-width: 1200px;
+        z-index: 1;
+        padding: 10px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        color: #00ff00;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      }
+
+      /* Note Input */
+      .note-input {
+        width: 100%;
+        max-width: 700px;
+        margin: 20px auto;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .note-input input,
+      .note-input select,
+      .note-input button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      .note-input select {
+        max-width: 200px;
+      }
+
+      .note-input button {
+        background: #004f00;
+        color: white;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .note-input button:hover {
+        background: lightgreen;
+        color: black;
+      }
+      /* Matrix Grid Wrapper */
+      .matrix-grid-wrapper {
+        white-space: nowrap; /* Prevents wrapping of the grid */
+        width: 23%;
+        height: 500px;
+      }
+      .matrix-grid {
+        display: flex;
+        width: 100%;
+        min-width: 100%; /* Ensure grid fills the width */
+        height: 500px; /* Match height to wrapper */
+        gap: 10px;
+      }
+
+      /* Quadrants */
+      .quadrant {
+        flex: 1 0 100%; /* Each quadrant takes full width */
+        height: 100%; /* Full height of the grid */
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border: 1px solid #45a29e;
+        border-radius: 5px;
+        overflow-y: auto; /* Vertical scroll within quadrant */
+      }
+
+      .quadrant h2 {
+        margin: 0;
+        text-align: center;
+        font-size: 1.2rem;
+        color: #00ff00;
+      }
+
+      /* Notes */
+      .note {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #007f00;
+        color: white;
+        padding: 3px;
+        border-radius: 5px;
+        cursor: grab;
+        text-align: left;
+        margin-bottom: 2px;
+        word-wrap: break-word; /* Enable word wrapping */
+        word-break: break-word; /* Break long words */
+        overflow-wrap: break-word; /* For better compatibility */
+        white-space: normal; /* Allow multi-line text */
+      }
+
+      .note span {
+        flex: 1;
+      }
+
+      .note button {
+        background: darkgreen;
+        border: none;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .note button:hover {
+        background: red;
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .matrix-grid {
+          flex-direction: row;
+          flex-wrap: nowrap;
+        }
+        /* Matrix Grid Wrapper */
+        .matrix-grid-wrapper {
+          overflow-x: auto; /* Horizontal scroll for mobile */
+          white-space: nowrap; /* Prevents wrapping of the grid */
+          width: 95%;
+          height: 450px;
+        }
+        .quadrant {
+          flex: 0 0 100%; /* Full width of each quadrant in mobile */
+        }
+        .note {
+          width: 90%;
+        }
+        .note-input {
+          width: 95%;
+        }
+        .container h1 {
+          font-size: 20px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>Hello from venkatesh</h1>
+    <div class="matrix-container"></div>
+
+    <div class="container">
+      <h1>Interactive Eisenhower Matrix</h1>
+      <p>i am not the one who made this check the link</p>
+      <a
+        href="https://codepen.io/grauconejo13/pen/OPLNBYE"
+        target="_blank"
+        style="color: white"
+        >click me</a
+      >
+      <!-- Input Section -->
+      <div class="note-input">
+        <input id="noteText" type="text" placeholder="Enter your note..." />
+        <select id="quadrantSelector">
+          <option value="quadrant-1">Important & Urgent</option>
+          <option value="quadrant-2">Important & Not Urgent</option>
+          <option value="quadrant-3">Not Important & Urgent</option>
+          <option value="quadrant-4">Not Important & Not Urgent</option>
+        </select>
+        <button id="addNote">Add Note</button>
+      </div>
+
+      <!-- Matrix Grid -->
+      <div class="matrix-grid-wrapper">
+        <div class="matrix-grid">
+          <div id="quadrant-1" class="quadrant">
+            <h2>Important & Urgent</h2>
+          </div>
+          <div id="quadrant-2" class="quadrant">
+            <h2>Important & Not Urgent</h2>
+          </div>
+          <div id="quadrant-3" class="quadrant">
+            <h2>Not Important & Urgent</h2>
+          </div>
+          <div id="quadrant-4" class="quadrant">
+            <h2>Not Important & Not Urgent</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.createElement("canvas");
+      document.querySelector(".matrix-container").appendChild(canvas);
+
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const fontSize = 16; // Size of the text
+      const columns = Math.floor(canvas.width / fontSize);
+
+      const drops = Array(columns).fill(0);
+
+      const characters =
+        "01abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()";
+
+      function drawMatrix() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#00FF00";
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const text =
+            characters[Math.floor(Math.random() * characters.length)];
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+
+          ctx.fillText(text, x, y);
+
+          if (y > canvas.height && Math.random() > 0.95) {
+            drops[i] = 0;
+          }
+
+          drops[i]++;
+        }
+      }
+
+      setInterval(drawMatrix, 50);
+
+      // Resize canvas dynamically
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        drops.length = Math.floor(canvas.width / fontSize);
+      });
+
+      let draggedNote = null;
+
+      // Make notes draggable and touch-friendly
+      function makeDraggable(note) {
+        note.draggable = true;
+
+        note.addEventListener("dragstart", (e) => {
+          draggedNote = e.target;
+        });
+
+        const deleteButton = note.querySelector(".delete-btn");
+        deleteButton.addEventListener("click", (e) => {
+          e.stopPropagation();
+          note.remove();
+        });
+
+        const noteContent = note.querySelector("span");
+        noteContent.addEventListener("click", () => {
+          const newText = prompt("Edit your note:", noteContent.textContent);
+          if (newText !== null && newText.trim() !== "") {
+            noteContent.textContent = newText;
+          }
+        });
+      }
+
+      // Allow dropping into quadrants
+      function setupQuadrants() {
+        const quadrants = document.querySelectorAll(".quadrant");
+
+        quadrants.forEach((quadrant) => {
+          quadrant.addEventListener("dragover", (e) => e.preventDefault());
+          quadrant.addEventListener("drop", (e) => {
+            if (draggedNote) {
+              quadrant.appendChild(draggedNote);
+              draggedNote = null;
+            }
+          });
+        });
+      }
+
+      // Add a new note with quadrant selection
+      function addNote() {
+        const noteText = document.getElementById("noteText").value.trim();
+        const selectedQuadrantId =
+          document.getElementById("quadrantSelector").value;
+
+        if (!noteText) {
+          alert("Please enter a note.");
+          return;
+        }
+
+        const note = document.createElement("div");
+        note.className = "note";
+        note.id = `note-${Date.now()}`;
+
+        note.innerHTML = `
+    <span>${noteText}</span>
+    <button class="delete-btn">X</button>
+  `;
+
+        makeDraggable(note);
+
+        // Add note to the selected quadrant
+        const selectedQuadrant = document.getElementById(selectedQuadrantId);
+        selectedQuadrant.appendChild(note);
+
+        document.getElementById("noteText").value = "";
+      }
+
+      // Initialize
+      document.getElementById("addNote").addEventListener("click", addNote);
+      setupQuadrants();
+    </script>
   </body>
 </html>
